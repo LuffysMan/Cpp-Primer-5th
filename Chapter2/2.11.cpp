@@ -1,7 +1,8 @@
 #include <iostream>
 
-extern int global_int = 1;
-
+extern int x = 1024;        //declaration and defination
+int iy;                     //declaration and defination
+extern int iz;              //declaration  
 
 int main(){
     return 0;

@@ -1,3 +1,6 @@
+## files ignored
 *.out
+test.*
 
+## folders ignored
 .vscode/
