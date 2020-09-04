@@ -4,16 +4,6 @@
 using namespace std;
 
 
-template <typename T>
-    void print(const T &t)
-    {
-        for (typename T::const_iterator it = t.begin(); it != t.end(); ++it)
-        {
-            cout << *it << " ";
-        }
-        cout << endl;
-    }
-
 int main(){
     int ia[] = {0,1,1,2,3,5,8,13,21,55,89};
     int L = sizeof(ia)/sizeof(int);
@@ -30,7 +20,6 @@ int main(){
             ++it;
         }
     }
-    print(v);
 
     list<int>::iterator iLst = lst1.begin();
     while (iLst != lst1.end()){
@@ -41,7 +30,6 @@ int main(){
             iLst = lst1.erase(iLst);
         }
     }
-    print(lst1);
 
     return 0;
 }
