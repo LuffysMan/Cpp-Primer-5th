@@ -1,18 +1,4 @@
-#include <iostream>
-#include <vector>
-using namespace std;
-
-
-int main(){
-    vector<int> vi = {1,2,3,4};
-    vector<int>::iterator iter = vi.begin();
-    cout << vi.capacity() << endl;
-    vi.erase(vi.begin());
-    cout << vi.capacity() << endl;
-    vi.shrink_to_fit();
-    cout << vi.capacity() << endl;
-    vi.reserve(10);
-    cout << vi.capacity() << endl;
-
-    return 0;
-}
+/*
+capacity()方法返回容器的容量, 因为顺序容器在内存中是连续存储的, 容器在扩张的时候会预留比实际更多的空间, 所以容量指的是这块连续内存能容纳元素的最大值;
+size()指的是容器中实际元素的个数.
+*/
