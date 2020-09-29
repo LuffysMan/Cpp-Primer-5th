@@ -1,5 +1,6 @@
 ## files ignored
 *.out
+*.gch
 test.*
 
 ## folders ignored
