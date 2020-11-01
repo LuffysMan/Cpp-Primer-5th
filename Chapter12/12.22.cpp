@@ -1,4 +1,4 @@
-#include "./12.19.h"
+#include "./12.22.h"
 
 
 void StrBlob::check(size_t i, const std::string &msg) const{
@@ -32,7 +32,7 @@ void StrBlob::pop_back(){
 }
 
 
-std::shared_ptr<std::vector<std::string>> StrBlobPtr::check(std::size_t i, const std::string& msg) const{
+std::shared_ptr<std::vector<std::string>> ConstStrBlobPtr::check(std::size_t i, const std::string& msg) const{
     std::shared_ptr<std::vector<std::string>> ret = wptr.lock();
     if (!ret){
         throw std::runtime_error("unbound StrBlobPtr");
@@ -43,12 +43,12 @@ std::shared_ptr<std::vector<std::string>> StrBlobPtr::check(std::size_t i, const
     return ret;
 }
 
-std::string& StrBlobPtr::deref() const{
+const std::string& ConstStrBlobPtr::deref() const{
     std::shared_ptr<std::vector<std::string>> p = check(curr, "dereference past end");
     return (*p)[curr];
 }
 
-StrBlobPtr& StrBlobPtr::incr(){
+ConstStrBlobPtr& ConstStrBlobPtr::incr(){
     //如果curr已经指向容器的尾后位置, 就不能递增它
     check(curr, "increment past end of StrBlobPtr");
     ++curr;
@@ -56,12 +56,11 @@ StrBlobPtr& StrBlobPtr::incr(){
 }
 
 
-StrBlobPtr StrBlob::begin(){
-    return StrBlobPtr(*this);
+ConstStrBlobPtr StrBlob::begin() const // should add const
+{
+    return ConstStrBlobPtr(*this);
 }
-
-StrBlobPtr StrBlob::end(){
-    StrBlobPtr ret = StrBlobPtr(*this, data->size());
-    return ret;
+ConstStrBlobPtr StrBlob::end() const // should add const
+{
+    return ConstStrBlobPtr(*this, data->size());
 }
-

@@ -6,11 +6,12 @@
 class StrBlobPtr;
 class StrBlob{
 public:
+    typedef std::vector<std::string>::size_type size_type;
+    
     friend class StrBlobPtr;
     StrBlobPtr begin(); 
     StrBlobPtr end();
 
-    typedef std::vector<std::string>::size_type size_type;
     
     StrBlob():data(std::make_shared<std::vector<std::string>>()){}
 
@@ -39,6 +40,7 @@ public:
     StrBlobPtr(StrBlob &a, size_t sz=0):wptr(a.data), curr(sz){}
     std::string& deref() const;
     StrBlobPtr& incr();
+    bool operator!=(const StrBlobPtr& p) { return p.curr != curr; }
 
 private:
     std::shared_ptr<std::vector<std::string>> check(std::size_t, const std::string&) const;
