@@ -37,27 +37,13 @@ class ConstStrBlobPtr {
 public:
     ConstStrBlobPtr() : curr(0) {}
     ConstStrBlobPtr(const StrBlob& a, size_t sz = 0) : wptr(a.data), curr(sz) {} // should add const
-    bool operator!=(ConstStrBlobPtr& p) { return p.curr != curr; }
-    const std::string& deref() const
-    { // return value should add const
-        auto p = check(curr, "dereference past end");
-        return (*p)[curr];
-    }
-    ConstStrBlobPtr& incr()
-    {
-        check(curr, "increment past end of StrBlobPtr");
-        ++curr;
-        return *this;
-    }
+    bool operator!=(const ConstStrBlobPtr& p) { return p.curr != curr; }
+    const std::string& deref() const;
+    const std::string& deref(size_t pos) const;
+    ConstStrBlobPtr& incr();
 
 private:
-    std::shared_ptr<std::vector<std::string>> check(size_t i, const std::string& msg) const
-    {
-        auto ret = wptr.lock();
-        if (!ret) throw std::runtime_error("unbound StrBlobPtr");
-        if (i >= ret->size()) throw std::out_of_range(msg);
-        return ret;
-    }
+    std::shared_ptr<std::vector<std::string>> check(size_t i, const std::string& msg) const;
     std::weak_ptr<std::vector<std::string>> wptr;
     size_t curr;
 };

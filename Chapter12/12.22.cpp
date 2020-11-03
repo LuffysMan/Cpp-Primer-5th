@@ -32,7 +32,8 @@ void StrBlob::pop_back(){
 }
 
 
-std::shared_ptr<std::vector<std::string>> ConstStrBlobPtr::check(std::size_t i, const std::string& msg) const{
+std::shared_ptr<std::vector<std::string>> 
+ConstStrBlobPtr::check(std::size_t i, const std::string& msg) const{
     std::shared_ptr<std::vector<std::string>> ret = wptr.lock();
     if (!ret){
         throw std::runtime_error("unbound StrBlobPtr");
@@ -46,6 +47,11 @@ std::shared_ptr<std::vector<std::string>> ConstStrBlobPtr::check(std::size_t i, 
 const std::string& ConstStrBlobPtr::deref() const{
     std::shared_ptr<std::vector<std::string>> p = check(curr, "dereference past end");
     return (*p)[curr];
+}
+
+const std::string& ConstStrBlobPtr::deref(size_t pos) const{
+    std::shared_ptr<std::vector<std::string>> p = check(pos, "dereference past end");
+    return (*p)[pos];
 }
 
 ConstStrBlobPtr& ConstStrBlobPtr::incr(){

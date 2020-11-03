@@ -1,0 +1,4 @@
+query operation accomplishes a simple task;
+find member of map;
+check if the specific word exists;
+check hhh;
