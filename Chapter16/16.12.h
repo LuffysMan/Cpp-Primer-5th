@@ -8,46 +8,62 @@ using std::shared_ptr;
 using std::weak_ptr;
 using std::initializer_list;
 
+
 template <typename> class BlobPtr;
-template <typename T> class Blob{
-public:
-    typedef vector<T>::size_type size_type;
-    
+template <typename> class Blob;
+template <typename T> bool operator==(const Blob<T>&, const Blob<T>&);
+
+template <typename T>
+class Blob{
     friend class BlobPtr<T>;
-    BlobPtr begin(); 
-    BlobPtr end();
+    friend bool operator==<T>(const Blob<T>&, const Blob<T>&);
+public:
+    typedef T value_type;
+    typedef typename std::vector<T>::size_type size_type;
+    
+    Blob();
+    Blob(initializer_list<T> il);
 
-    Blob():data(make_shared<vector<T>>()){}
-
-    Blob(initializer_list<T> il):data(std::make_shared<vector<T>>(il)){}
+    BlobPtr<T> begin();
+    BlobPtr<T> end();
 
     size_type size() const {return data->size();}
     bool empty() const {return data->empty();}
     //添加删除元素
     void push_back(const T &t){data->push_back(t);}
+    //移动版本
+    void push_back(T &&t) { data->push_back(std::move(t)); }
     void pop_back();
     //元素访问
     T &front();
-    const T &front() const;
+    T &front() const;
     T &back();
-    const T &back() const;
+    T &back() const;
+    T &operator[] (size_type i);
+    T &operator[] (size_type i) const;
     
 private:
     shared_ptr<vector<T>> data;
-    void check(size_t i, const T &msg) const;
+    void check(size_type i, const string &msg) const;
 };
 
 
-template <typename T> class BlobPtr{
+template <typename T> bool operator==(const BlobPtr<T>&, const BlobPtr<T>&);
+template <typename T>
+class BlobPtr{
 public:
     BlobPtr():curr(0){}
-    BlobPtr(Blob &a, size_t sz=0):wptr(a.data), curr(sz){}
-    T& deref() const;
-    BlobPtr& incr();
-    bool operator!=(const BlobPtr& p) { return p.curr != curr; }
+    BlobPtr(Blob<T> &a, size_t sz = 0):wptr(a.data), curr(sz){}
+    T& operator*() const;
+    //前置运算符
+    BlobPtr& operator++();
+    BlobPtr& operator--();
+    //后置运算符
+    BlobPtr operator++(int);
+    BlobPtr operator--(int);
 
 private:
-    shared_ptr<ector<T>> check(size_t, const T&) const;
+    shared_ptr<vector<T>> check(size_t, const T&) const;
     weak_ptr<vector<T>> wptr;
     size_t curr;
 };
