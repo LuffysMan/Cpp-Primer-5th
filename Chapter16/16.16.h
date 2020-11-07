@@ -1,26 +1,26 @@
 #include <string>
+#include <memory>
 
-
-class StrVec {
+template <typename T>
+class Vec {
 public:
-    StrVec():elements(nullptr), first_free(nullptr), cap(nullptr) { }
-    StrVec(const StrVec&);
-    StrVec &operator=(const StrVec&);
-    ~StrVec();
-    void push_back(const std::string&);
+    Vec():elements(nullptr), first_free(nullptr), cap(nullptr) { }
+    Vec(const Vec&);
+    Vec &operator=(const Vec&);
+    ~Vec();
+    void push_back(const T&);
     size_t size() const {return first_free - elements; }
     size_t capacity() const { return cap - elements; }
-    std::string *begin() { return elements; }
-    std::string *end() { return first_free; }
-
+    T *begin() const { return elements; }
+    T *end() const { return first_free; }
 
 private:
-    static std::allocator<std::string> alloc;
+    static std::allocator<T> alloc;
     void chk_n_alloc() { if (size() == capacity()) reallocate(); }
-    std::pair<std::string*, std::string*> alloc_n_copy(const std::string*, const std::string*);
+    std::pair<T*, T*> alloc_n_copy(const T*, const T*);
     void free();
     void reallocate();
-    std::string* elements;
-    std::string* first_free;
-    std::string* cap;
+    T* elements;
+    T* first_free;
+    T* cap;
 };
