@@ -2,6 +2,7 @@
 *.out
 *.gch
 *.o
+*.i
 test.*
 
 ## folders ignored
